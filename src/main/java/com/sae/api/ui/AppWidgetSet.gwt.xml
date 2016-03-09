@@ -1,0 +1,8 @@
+<module>
+
+    <inherits name="org.vaadin.hene.expandingtextarea.widgetset.ExpandingtextareaWidgetset" />
+
+    <inherits name="com.vaadin.tapio.googlemaps.Widgetset" />
+
+    <inherits name="com.vaadin.DefaultWidgetSet" />
+</module>

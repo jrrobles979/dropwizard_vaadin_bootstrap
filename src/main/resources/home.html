@@ -1,0 +1,76 @@
+<style>
+    <!--
+    .row.content {
+        height: 1500px
+    }
+    -->
+
+    @media screen and (max-width: 767px) {
+        .sidenav {
+            height: auto;
+            padding: 15px;
+        }
+
+        .row.content {height: auto;}
+    }
+
+    a:link {
+        text-decoration: none;
+    }
+
+    a:visited {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+
+    a:active {
+        text-decoration: none;
+    }
+</style>
+<div class="container-fluid">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="#">SAE Event</a>
+            </div>
+            <div class="collapse navbar-collapse" id="myNavbar">
+                <ul class="nav navbar-nav">
+                    <li><a href="#!event">Event</a></li>
+                    <li><a href="#!subevents">Subevents</a></li>
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Registration
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#!registration">New</a></li>
+                            <li><a href="#!registrationlist">List</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#!dashboard">Dashboard</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Settings
+                            <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="#!setup">Setup</a></li>
+                            <li><a href="#!users">Users</a></li>
+                            <li><a href="#!log">Log</a></li>
+                        </ul>
+                    </li>
+                    <li><a href="#signout">Sign out</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <br>
+    <br>
+    <div class="row content" location="content"></div>
+</div>

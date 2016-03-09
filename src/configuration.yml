@@ -1,0 +1,38 @@
+server:
+  type: simple
+  rootPath: '/api/*'
+  applicationContextPath: /
+  adminContextPath: /admin
+
+swagger:
+  resourcePackage: com.sae.api.resources
+
+authenticationCachePolicy: maximumSize=10000, expireAfterAccess=15m
+
+database:
+    driverClass: org.postgresql.Driver
+    user: sae
+    password: sae
+    url: jdbc:postgresql://127.0.0.1/sae
+    properties:
+        charSet: UTF-8
+        hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+        hibernate.show_sql: true
+        hibernate.default_schema: sae
+    maxWaitForConnection: 1s
+    validationQuery: "SELECT 1"
+    minSize: 4
+    maxSize: 32
+    checkConnectionWhileIdle: false
+
+logging:
+
+    # The default level of all loggers. Can be OFF, ERROR, WARN, INFO, DEBUG, TRACE, or ALL.
+    level: INFO
+
+    loggers:
+        io.dropwizard: INFO
+        com.onewip.api: DEBUG
+        org.eclipse.jetty.servlets: INFO
+        org.hibernate.SQL:
+            level: INFO
