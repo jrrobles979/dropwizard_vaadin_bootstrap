@@ -12,6 +12,7 @@ import java.util.Map;
  * CrudServiceDAO interface.
  *
  * @author karesti
+ * @modified ralmeida
  */
 public interface UnmanagedServiceDAO {
 
