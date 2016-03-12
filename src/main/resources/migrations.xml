@@ -11,7 +11,7 @@
         <!--
          TABLE: users
         -->
-        <createTable tableName="users" schemaName="sae">
+        <createTable tableName="users" >
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -19,7 +19,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="password_digest" type="varchar"/>
-            <column name="password_salt" type="varchar"/>
             <column name="first_name" type="varchar">
                 <constraints nullable="false"/>
             </column>
@@ -41,7 +40,7 @@
         <!--
          TABLE: sessions
         -->
-        <createTable tableName="sessions" schemaName="sae">
+        <createTable tableName="sessions">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -58,56 +57,10 @@
             <column name="ip" type="varchar" />
         </createTable>
 
-        <!--&lt;!&ndash;-->
-         <!--TABLE: email_lostpassword-->
-        <!--&ndash;&gt;-->
-        <!--<createTable tableName="email_lostpassword" schemaName="sae">-->
-            <!--<column name="id" type="bigint" autoIncrement="true">-->
-                <!--<constraints primaryKey="true" nullable="false"/>-->
-            <!--</column>-->
-            <!--<column name="user_id" type="bigint">-->
-                <!--<constraints nullable="false" references="users" foreignKeyName="id" deleteCascade="true"/>-->
-            <!--</column>-->
-            <!--<column name="code" type="varchar" />-->
-            <!--<column name="seed" type="varchar" />-->
-            <!--<column name="email" type="varchar" />-->
-            <!--<column name="created_date" type="datetime" defaultValue="now()"/>-->
-        <!--</createTable>-->
-
-        <!--<createIndex tableName="email_lostpassword" indexName="i1email_lostpassword" unique="true">-->
-            <!--<column name="code"/>-->
-            <!--<column name="seed"/>-->
-        <!--</createIndex>-->
-        <!--<createIndex tableName="email_lostpassword" indexName="i2email_lostpassword" unique="true">-->
-            <!--<column name="email"/>-->
-        <!--</createIndex>-->
-
-        <!--&lt;!&ndash;-->
-         <!--TABLE: email_templates-->
-        <!--&ndash;&gt;-->
-        <!--<createTable tableName="email_templates">-->
-            <!--<column name="id" type="bigint" autoIncrement="true">-->
-                <!--<constraints primaryKey="true" nullable="false"/>-->
-            <!--</column>-->
-            <!--<column name="name" type="varchar" />-->
-            <!--<column name="text" type="varchar" />-->
-            <!--<column name="html" type="varchar" />-->
-        <!--</createTable>-->
-
-        <!--<createIndex tableName="email_templates" indexName="i1email_templates" unique="true">-->
-            <!--<column name="name" />-->
-        <!--</createIndex>-->
-
-        <!--<loadData tableName="email_templates" schemaName="sae" separator="|" encoding="UTF-8" file="email_templates.csv">-->
-            <!--<column name="name" type="String"/>-->
-            <!--<column name="text" type="String"/>-->
-            <!--<column name="html" type="String"/>-->
-        <!--</loadData>-->
-
         <!--
          TABLE: event
         -->
-        <createTable tableName="event" schemaName="sae">
+        <createTable tableName="event">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
@@ -120,18 +73,17 @@
             <column name="end_date" type="datetime"/>
             <column name="location_lat" type="float"/>
             <column name="location_long" type="float"/>
-            <column name="map_url" type="varchar"/>
         </createTable>
 
         <!--
          TABLE: subevent
         -->
-        <createTable tableName="subevent" schemaName="sae">
+        <createTable tableName="subevent">
             <column name="id" type="bigint" autoIncrement="true">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="event_id" type="bigint">
-                <constraints nullable="false"/>
+                <constraints nullable="false" references="event" foreignKeyName="id" deleteCascade="true" />
             </column>
             <column name="name" type="varchar"/>
             <column name="description" type="varchar"/>
@@ -142,107 +94,45 @@
             <column name="end_date" type="datetime"/>
             <column name="location_lat" type="float"/>
             <column name="location_long" type="float"/>
-            <column name="map_url" type="varchar"/>
         </createTable>
-
-        <createIndex tableName="subevent" indexName="i1subevent" unique="true" schemaName="sae">
-            <column name="name"></column>
-        </createIndex>
-
-        <createIndex tableName="subevent" indexName="i2subevent" unique="false"  schemaName="sae">
-            <column name="event_id"></column>
-        </createIndex>
-
-        <addForeignKeyConstraint baseTableName="subevent" baseColumnNames="event_id" constraintName="fk_subevent_event"
-                                 referencedTableName="event"
-                                 referencedColumnNames="id" onDelete="RESTRICT" baseTableSchemaName="sae"/>
 
         <!--
-         TABLE: registration
+        Loading demo data
         -->
-        <createTable tableName="registration" schemaName="sae">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="first_name" type="varchar"/>
-            <column name="last_name" type="varchar"/>
-            <column name="email" type="varchar"/>
-            <column name="age" type="int"/>
-            <column name="on_date" type="datetime" defaultValue="now()"/>
-            <column name="user_id" type="bigint">
-                <constraints nullable="false"/>
-            </column>
-            <column name="extern_reference" type="varchar"/>
-            <column name="extern_info" type="varchar"/>
-            <column name="extern_date" type="datetime"/>
-        </createTable>
+        <loadData tableName="users" separator="|" encoding="UTF-8" file="init_users.csv">
+            <column name="username" type="String"/>
+            <column name="password_digest" type="String"/>
+            <column name="first_name" type="String"/>
+            <column name="last_name" type="String"/>
+            <column name="active" type="Numeric"/>
+            <column name="email" type="String"/>
+        </loadData>
 
-        <createIndex tableName="registration" indexName="i1registration" unique="false"  schemaName="sae">
-            <column name="first_name"></column>
-            <column name="last_name"></column>
-        </createIndex>
+        <loadData tableName="event" separator="|" encoding="UTF-8" file="init_event.csv">
+            <column name="name" type="String"/>
+            <column name="description" type="String"/>
+            <column name="active" type="Numeric"/>
+            <column name="type" type="Numeric"/>
+            <column name="capacity" type="Numeric"/>
+            <column name="start_date" type="Date"/>
+            <column name="end_date" type="Date"/>
+            <column name="location_lat" type="Numeric"/>
+            <column name="location_long" type="Numeric"/>
+        </loadData>
 
-        <createIndex tableName="registration" indexName="i2registration" unique="true"  schemaName="sae">
-            <column name="extern_reference"></column>
-        </createIndex>
+        <loadData tableName="subevent" separator="|" encoding="UTF-8" file="init_subevent.csv">
+            <column name="event_id" type="Numeric"/>
+            <column name="name" type="String"/>
+            <column name="description" type="String"/>
+            <column name="active" type="Numeric"/>
+            <column name="type" type="Numeric"/>
+            <column name="capacity" type="Numeric"/>
+            <column name="start_date" type="Date"/>
+            <column name="end_date" type="Date"/>
+            <column name="location_lat" type="Numeric"/>
+            <column name="location_long" type="Numeric"/>
+        </loadData>
 
-        <createIndex tableName="registration" indexName="i3registration" unique="false"  schemaName="sae">
-            <column name="user_id"></column>
-        </createIndex>
-
-        <addForeignKeyConstraint baseTableName="registration" baseColumnNames="user_id"
-                                 constraintName="fk_registration_user"
-                                 referencedTableName="users"
-                                 referencedColumnNames="id" onDelete="RESTRICT" baseTableSchemaName="sae"/>
-
-        <!--
-         TABLE: subevent_registration
-        -->
-        <createTable tableName="subevent_registration" schemaName="sae">
-            <column name="subevent_id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="registration_id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="user_id" type="bigint">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="on_date" type="datetime" defaultValue="now()"/>
-        </createTable>
-
-        <createIndex tableName="subevent_registration" indexName="i1subevent_registration" unique="true"  schemaName="sae">
-            <column name="subevent_id"/>
-            <column name="registration_id"/>
-            <column name="user_id"/>
-        </createIndex>
-
-        <addForeignKeyConstraint baseTableName="subevent_registration" baseColumnNames="subevent_id" constraintName="fk_subevent_registration_subevent"
-                                 referencedTableName="subevent"
-                                 referencedColumnNames="id" onDelete="RESTRICT" baseTableSchemaName="sae"/>
-
-        <addForeignKeyConstraint baseTableName="subevent_registration" baseColumnNames="registration_id" constraintName="fk_subevent_registration_registration"
-                                 referencedTableName="registration"
-                                 referencedColumnNames="id" onDelete="RESTRICT" baseTableSchemaName="sae"/>
-
-        <addForeignKeyConstraint baseTableName="subevent_registration" baseColumnNames="user_id" constraintName="fk_subevent_registration_user"
-                                 referencedTableName="users"
-                                 referencedColumnNames="id" onDelete="RESTRICT" baseTableSchemaName="sae"/>
-
-        <!--
-         TABLE: subevent_log
-        -->
-        <createTable tableName="subevent_log" schemaName="sae">
-            <column name="id" type="bigint" autoIncrement="true">
-                <constraints primaryKey="true" nullable="false"/>
-            </column>
-            <column name="type" type="varchar" />
-            <column name="on_date" type="datetime" defaultValue="now()"/>
-            <column name="user_id" type="bigint">
-                <constraints nullable="true" references="users" foreignKeyName="id" deleteCascade="false"/>
-            </column>
-            <column name="message" type="varchar" />
-        </createTable>
 
     </changeSet>
 

@@ -1,0 +1,2 @@
+username|password_digest|first_name|last_name|active|email
+admin|admin|User|Administrator|1|admin@demo.com

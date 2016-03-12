@@ -1,24 +1,24 @@
 server:
   type: simple
-  rootPath: '/api/*'
+  rootPath: '/demo/*'
   applicationContextPath: /
   adminContextPath: /admin
 
 swagger:
-  resourcePackage: com.sae.api.resources
+  resourcePackage: com.sae.event.resources
 
 authenticationCachePolicy: maximumSize=10000, expireAfterAccess=15m
 
 database:
     driverClass: org.postgresql.Driver
-    user: sae
-    password: sae
-    url: jdbc:postgresql://127.0.0.1/sae
+    user: demo
+    password: demo
+    url: jdbc:postgresql://127.0.0.1/demo
     properties:
         charSet: UTF-8
         hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
         hibernate.show_sql: true
-        hibernate.default_schema: sae
+        hibernate.default_schema: demo
     maxWaitForConnection: 1s
     validationQuery: "SELECT 1"
     minSize: 4

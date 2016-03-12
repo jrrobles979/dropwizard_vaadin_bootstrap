@@ -1,0 +1,7 @@
+event_id|name|description|active|type|capacity|start_date|end_date|location_lat|location_long
+1|Conferencia A|Conferencia A|1|100|5000|2016-01-01|2016-01-12|25.6771536|-100.2937603
+1|Conferencia B|Conferencia B|1|100|5000|2016-01-01|2016-01-12|25.6771536|-100.2937603
+1|Conferencia C|Conferencia C|1|100|5000|2016-01-01|2016-01-12|25.6771536|-100.2937603
+1|Conferencia D|Conferencia D|1|100|5000|2016-01-01|2016-01-12|25.6771536|-100.2937603
+1|Conferencia E|Conferencia E|1|100|5000|2016-01-01|2016-01-12|25.6771536|-100.2937603
+1|Conferencia F|Conferencia F|1|100|5000|2016-01-01|2016-01-12|25.6771536|-100.2937603

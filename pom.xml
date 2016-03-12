@@ -148,16 +148,6 @@
     </dependency>
 
     <!--
-    Jasyp: to encrypt password
-    -->
-    <dependency>
-      <groupId>org.jasypt</groupId>
-      <artifactId>jasypt</artifactId>
-      <version>1.9.2</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <!--
     Swagger
     -->
     <dependency>
@@ -219,7 +209,7 @@
                         implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer"/>
                 <transformer
                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>com.sae.api.SAEApp</mainClass>
+                  <mainClass>com.sae.event.SAEApp</mainClass>
                 </transformer>
               </transformers>
             </configuration>
