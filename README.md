@@ -2,7 +2,7 @@
 
 **Prerequisites**
 
-Look for [detailed instructions](http://blog.onewip.com/dropwizard-vaadin-bootstrap) on prerequisites, compile and running.
+Look for [detailed instructions](http://blog.onewip.com/dropwizard-vaadin-bootstrap) on prerequisites, compiling and running.
 
 **Compile**
 
