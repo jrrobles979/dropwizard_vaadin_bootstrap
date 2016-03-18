@@ -7,9 +7,7 @@ import com.sae.event.core.Event;
 import com.sae.event.core.Session;
 import com.sae.event.core.Subevent;
 import com.sae.event.core.User;
-import com.sae.event.db.HibernateServiceDAO;
-import com.sae.event.db.ServiceDAO;
-import com.sae.event.db.SessionDAO;
+import com.sae.event.db.*;
 import com.sae.event.health.TemplateHealthCheck;
 import com.sae.event.resources.SessionsResource;
 import com.sae.event.resources.StatusResource;
@@ -134,9 +132,8 @@ public class SAEApp extends Application<SAEConfiguration> {
         //---
         //Authorization/Authenticator & Cache
         //---
-        final SessionDAO sessionDAO = new SessionDAO(hibernateBundle.getSessionFactory());
-
-        final SAEAuthenticator oAuthAuthenticator= new SAEAuthenticator(sessionDAO);
+//        final SessionDAO sessionDAO = new SessionDAO(hibernateBundle.getSessionFactory());
+        final SAEAuthenticator oAuthAuthenticator= new SAEAuthenticator(new UnmanagedHibernateServiceDAO(hibernateBundle.getSessionFactory()));
         CachingAuthenticator<String, User> cachingAuthenticator = new CachingAuthenticator<>(
                 metricsRegistry, oAuthAuthenticator,
                 configuration.getAuthenticationCachePolicy());

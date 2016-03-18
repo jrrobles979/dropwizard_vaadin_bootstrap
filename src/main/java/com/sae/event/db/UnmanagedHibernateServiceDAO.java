@@ -4,11 +4,9 @@ package com.sae.event.db;
  * Created by ralmeida on 10/16/15.
  */
 
-import org.hibernate.Criteria;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.hibernate.*;
 import org.hibernate.criterion.Projections;
+import org.slf4j.Logger;
 
 import java.io.Serializable;
 import java.util.Collection;
@@ -17,22 +15,39 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import static org.slf4j.LoggerFactory.getLogger;
 
-public class ManagedHibernateServiceDAO implements UnmanagedServiceDAO {
 
+public class UnmanagedHibernateServiceDAO implements UnmanagedServiceDAO {
+    private final Logger logger = getLogger(this.getClass());
     private SessionFactory sessionFactory;
-    private org.hibernate.Session currentSession;
+    private Session currentSession;
+    private Transaction tx = null;
+    private int openOps = 0;
 
-    public ManagedHibernateServiceDAO(SessionFactory sessionFactory){
+    public UnmanagedHibernateServiceDAO(SessionFactory sessionFactory){
         this.sessionFactory = sessionFactory;
     }
 
     public void openSession(){
         currentSession = sessionFactory.openSession();
+        tx = currentSession.beginTransaction();
     }
 
     public void closeSession(){
-        currentSession.close();
+        try {
+            if (openOps == 0) {
+                tx.commit();
+            } else {
+                tx.rollback();
+            }
+        }
+        catch (Exception ex){
+            logger.error("closeSession: " + ex.toString());
+        }
+        finally {
+            currentSession.close();
+        }
     }
 
     public Session getSession() {
@@ -40,10 +55,12 @@ public class ManagedHibernateServiceDAO implements UnmanagedServiceDAO {
     }
 
     public <T> T create(T t) {
+        openOps++;
         Session session = getSession();
         session.persist(t);
         session.flush();
         session.refresh(t);
+        openOps--;
         return t;
     }
 
@@ -52,16 +69,22 @@ public class ManagedHibernateServiceDAO implements UnmanagedServiceDAO {
     }
 
     public <T> T update(T type) {
+        openOps++;
         getSession().merge(type);
+        openOps--;
         return type;
     }
 
     public <T, PK extends Serializable> void delete(Class<T> type, PK id) {
-        Session session = getSession();
 
+        openOps++;
+
+        Session session = getSession();
         @SuppressWarnings("unchecked")
         T ref = (T) session.get(type, id);
         session.delete(ref);
+
+        openOps--;
     }
 
     @SuppressWarnings("unchecked")
@@ -102,6 +125,7 @@ public class ManagedHibernateServiceDAO implements UnmanagedServiceDAO {
     public int updateWithNamedQuery(String queryName,
                                       Map<String, Object> params) {
 
+        openOps++;
         Set<Entry<String, Object>> rawParameters = params.entrySet();
         Query query = getSession().getNamedQuery(queryName);
 
@@ -109,7 +133,11 @@ public class ManagedHibernateServiceDAO implements UnmanagedServiceDAO {
             query.setParameter(entry.getKey(), entry.getValue());
 
         }
-        return query.executeUpdate();
+
+        int res = query.executeUpdate();
+        openOps--;
+
+        return res;
     }
 
 

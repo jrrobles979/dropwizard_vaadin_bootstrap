@@ -1,7 +1,7 @@
 package com.sae.event.ui;
 
 import com.sae.event.SAEConstants;
-import com.sae.event.db.ManagedHibernateServiceDAO;
+import com.sae.event.db.UnmanagedHibernateServiceDAO;
 import com.sae.event.db.UnmanagedServiceDAO;
 import com.sae.event.services.SAEUtil;
 import com.sebworks.vaadstrap.Container;
@@ -71,7 +71,7 @@ public class HomeUI extends UI{
     }
 
     public UnmanagedServiceDAO getServiceDAO(){
-        UnmanagedServiceDAO serviceDAO = new ManagedHibernateServiceDAO(sessionFactory);
+        UnmanagedServiceDAO serviceDAO = new UnmanagedHibernateServiceDAO(sessionFactory);
         return serviceDAO;
     }
 }
